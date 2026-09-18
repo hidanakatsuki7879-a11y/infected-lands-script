@@ -1,105 +1,90 @@
 -- ====================================================================
--- CRIMSON MOBILE INTERFACE
--- ====================================================================
+-- CRIMSON MOBILE INTERFACE (COMPLETE VERSION)
+-- ==================================================================== 
+
+local CoreGui = game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+local TweenService = game:GetService("TweenService") 
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "InfectedLandsControlGUI"
 screenGui.ResetOnSpawn = false
-screenGui.Parent = CoreGui
+screenGui.Parent = CoreGui 
 
 -- ============================================================
--- CRIMSON THEME
+-- CRIMSON THEME CONFIG
 -- ============================================================
-
 local CRIMSON = Color3.fromRGB(220, 20, 60)
 local DARK_CRIMSON = Color3.fromRGB(120, 8, 30)
 local DEEP_RED = Color3.fromRGB(80, 5, 18)
-
 local BLACK = Color3.fromRGB(8, 8, 10)
 local DARK = Color3.fromRGB(15, 15, 18)
 local PANEL = Color3.fromRGB(20, 20, 24)
-local PANEL_2 = Color3.fromRGB(26, 26, 31)
-
 local WHITE = Color3.fromRGB(255, 255, 255)
 local LIGHT_TEXT = Color3.fromRGB(220, 220, 225)
-local MUTED = Color3.fromRGB(145, 145, 155)
+local MUTED = Color3.fromRGB(145, 145, 155) 
+
+shared.CrimsonConfig = shared.CrimsonConfig or {
+WeaponESP = false,
+LootESP = false,
+GPSTracking = false
+} 
 
 -- ============================================================
--- MAIN MOBILE BUTTON
+-- MAIN TOGGLE BUTTON
 -- ============================================================
-
 local mainToggleBtn = Instance.new("TextButton")
 mainToggleBtn.Name = "CrimsonToggle"
 mainToggleBtn.Size = UDim2.new(0, 55, 0, 55)
 mainToggleBtn.Position = UDim2.new(1, -75, 0.25, 0)
-
 mainToggleBtn.BackgroundColor3 = BLACK
-mainToggleBtn.BorderSizePixel = 0
 mainToggleBtn.Text = "☰"
 mainToggleBtn.TextSize = 25
 mainToggleBtn.TextColor3 = CRIMSON
 mainToggleBtn.Font = Enum.Font.SourceSansBold
-mainToggleBtn.AutoButtonColor = false
 mainToggleBtn.ZIndex = 20
+mainToggleBtn.Parent = screenGui 
 
 local btnCorner = Instance.new("UICorner")
 btnCorner.CornerRadius = UDim.new(0, 14)
-btnCorner.Parent = mainToggleBtn
+btnCorner.Parent = mainToggleBtn 
 
 local btnStroke = Instance.new("UIStroke")
 btnStroke.Color = CRIMSON
 btnStroke.Thickness = 2
-btnStroke.Transparency = 0.1
-btnStroke.Parent = mainToggleBtn
-
-mainToggleBtn.Parent = screenGui
+btnStroke.Parent = mainToggleBtn 
 
 -- ============================================================
--- MAIN PANEL
+-- MAIN FRAME
 -- ============================================================
-
 local menuFrame = Instance.new("Frame")
 menuFrame.Name = "CrimsonPanel"
 menuFrame.Size = UDim2.new(0, 330, 0, 330)
 menuFrame.Position = UDim2.new(0.5, -165, 0.5, -165)
-
 menuFrame.BackgroundColor3 = BLACK
-menuFrame.BorderSizePixel = 0
 menuFrame.Visible = false
 menuFrame.ClipsDescendants = true
-menuFrame.Parent = screenGui
+menuFrame.Parent = screenGui 
 
 local menuCorner = Instance.new("UICorner")
 menuCorner.CornerRadius = UDim.new(0, 12)
-menuCorner.Parent = menuFrame
+menuCorner.Parent = menuFrame 
 
 local menuStroke = Instance.new("UIStroke")
 menuStroke.Color = CRIMSON
 menuStroke.Thickness = 2
-menuStroke.Transparency = 0
-menuStroke.Parent = menuFrame
+menuStroke.Parent = menuFrame 
+
+mainToggleBtn.MouseButton1Click:Connect(function()
+menuFrame.Visible = not menuFrame.Visible
+end) 
 
 -- ============================================================
--- HEADER
+-- HEADER & CLOSE
 -- ============================================================
-
 local header = Instance.new("Frame")
-header.Name = "Header"
 header.Size = UDim2.new(1, 0, 0, 70)
 header.BackgroundColor3 = DEEP_RED
-header.BorderSizePixel = 0
-header.Parent = menuFrame
-
-local headerCorner = Instance.new("UICorner")
-headerCorner.CornerRadius = UDim.new(0, 12)
-headerCorner.Parent = header
-
-local headerAccent = Instance.new("Frame")
-headerAccent.Size = UDim2.new(1, 0, 0, 3)
-headerAccent.Position = UDim2.new(0, 0, 1, -3)
-headerAccent.BackgroundColor3 = CRIMSON
-headerAccent.BorderSizePixel = 0
-headerAccent.Parent = header
+header.Parent = menuFrame 
 
 local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, -55, 0, 32)
@@ -110,7 +95,7 @@ title.TextColor3 = WHITE
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 21
 title.TextXAlignment = Enum.TextXAlignment.Left
-title.Parent = header
+title.Parent = header 
 
 local subtitle = Instance.new("TextLabel")
 subtitle.Size = UDim2.new(1, -55, 0, 20)
@@ -121,212 +106,114 @@ subtitle.TextColor3 = CRIMSON
 subtitle.Font = Enum.Font.SourceSansBold
 subtitle.TextSize = 11
 subtitle.TextXAlignment = Enum.TextXAlignment.Left
-subtitle.Parent = header
-
--- ============================================================
--- CLOSE BUTTON
--- ============================================================
+subtitle.Parent = header 
 
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 35, 0, 35)
 closeBtn.Position = UDim2.new(1, -43, 0, 10)
-
 closeBtn.BackgroundColor3 = DARK_CRIMSON
-closeBtn.BorderSizePixel = 0
 closeBtn.Text = "×"
 closeBtn.TextColor3 = WHITE
 closeBtn.TextSize = 25
 closeBtn.Font = Enum.Font.SourceSansBold
-closeBtn.AutoButtonColor = false
-closeBtn.Parent = header
-
-local closeCorner = Instance.new("UICorner")
-closeCorner.CornerRadius = UDim.new(0, 8)
-closeCorner.Parent = closeBtn
-
-local closeStroke = Instance.new("UIStroke")
-closeStroke.Color = CRIMSON
-closeStroke.Thickness = 1
-closeStroke.Parent = closeBtn
+closeBtn.Parent = header 
 
 closeBtn.MouseButton1Click:Connect(function()
-    menuFrame.Visible = false
-end)
+menuFrame.Visible = false
+end) 
 
 -- ============================================================
 -- STATUS BAR
 -- ============================================================
-
 local status = Instance.new("TextLabel")
 status.Size = UDim2.new(1, -30, 0, 28)
 status.Position = UDim2.new(0, 15, 0, 82)
-
 status.BackgroundColor3 = PANEL
-status.BorderSizePixel = 0
 status.Text = "●  INFECTED LANDS  |  ENGINE READY"
 status.TextColor3 = LIGHT_TEXT
 status.Font = Enum.Font.SourceSans
 status.TextSize = 11
 status.TextXAlignment = Enum.TextXAlignment.Left
-status.Parent = menuFrame
-
-local statusCorner = Instance.new("UICorner")
-statusCorner.CornerRadius = UDim.new(0, 7)
-statusCorner.Parent = status
-
-local statusStroke = Instance.new("UIStroke")
-statusStroke.Color = DARK_CRIMSON
-statusStroke.Thickness = 1
-statusStroke.Parent = status
+status.Parent = menuFrame 
 
 -- ============================================================
--- OPTION CONTAINER
+-- CONTAINER & OPTIONS CREATOR
 -- ============================================================
-
 local itemContainer = Instance.new("Frame")
 itemContainer.Size = UDim2.new(1, -30, 0, 195)
 itemContainer.Position = UDim2.new(0, 15, 0, 120)
-
 itemContainer.BackgroundTransparency = 1
-itemContainer.Parent = menuFrame
+itemContainer.Parent = menuFrame 
 
 local listLayout = Instance.new("UIListLayout")
 listLayout.Padding = UDim.new(0, 8)
 listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-listLayout.Parent = itemContainer
-
--- ============================================================
--- CRIMSON TOGGLE
--- ============================================================
+listLayout.Parent = itemContainer 
 
 local function createToggleOption(text, globalVarName, sortOrder)
+local optionFrame = Instance.new("Frame")
+optionFrame.Size = UDim2.new(1, 0, 0, 56)
+optionFrame.BackgroundColor3 = PANEL
+optionFrame.LayoutOrder = sortOrder
+optionFrame.Parent = itemContainer 
 
-    local optionFrame = Instance.new("Frame")
-    optionFrame.Size = UDim2.new(1, 0, 0, 56)
-    optionFrame.BackgroundColor3 = PANEL
-    optionFrame.BorderSizePixel = 0
-    optionFrame.LayoutOrder = sortOrder
-    optionFrame.Parent = itemContainer
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, -90, 0, 25)
+label.Position = UDim2.new(0, 14, 0, 6)
+label.BackgroundTransparency = 1
+label.Text = text
+label.TextColor3 = WHITE
+label.Font = Enum.Font.SourceSansBold
+label.TextSize = 13
+label.TextXAlignment = Enum.TextXAlignment.Left
+label.Parent = optionFrame
 
-    local optionCorner = Instance.new("UICorner")
-    optionCorner.CornerRadius = UDim.new(0, 8)
-    optionCorner.Parent = optionFrame
+local description = Instance.new("TextLabel")
+description.Size = UDim2.new(1, -90, 0, 18)
+description.Position = UDim2.new(0, 14, 0, 29)
+description.BackgroundTransparency = 1
+description.TextColor3 = MUTED
+description.Font = Enum.Font.SourceSans
+description.TextSize = 10
+description.TextXAlignment = Enum.TextXAlignment.Left
+description.Parent = optionFrame
 
-    local optionStroke = Instance.new("UIStroke")
-    optionStroke.Color = Color3.fromRGB(45, 45, 50)
-    optionStroke.Thickness = 1
-    optionStroke.Parent = optionFrame
+if globalVarName == "WeaponESP" then description.Text = "Show weapon pickups"
+elseif globalVarName == "LootESP" then description.Text = "Show supplies and loot"
+elseif globalVarName == "GPSTracking" then description.Text = "Show distance tracking" end
 
-    -- Feature title
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, -90, 0, 25)
-    label.Position = UDim2.new(0, 14, 0, 6)
+local toggle = Instance.new("TextButton")
+toggle.Size = UDim2.new(0, 55, 0, 28)
+toggle.Position = UDim2.new(1, -65, 0.5, -14)
+toggle.BackgroundColor3 = DARK
+toggle.Text = "OFF"
+toggle.Font = Enum.Font.SourceSansBold
+toggle.TextSize = 12
+toggle.TextColor3 = MUTED
+toggle.Parent = optionFrame
 
-    label.BackgroundTransparency = 1
-    label.Text = text
-    label.TextColor3 = WHITE
-    label.Font = Enum.Font.SourceSansBold
-    label.TextSize = 13
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Parent = optionFrame
-
-    -- Description
-    local description = Instance.new("TextLabel")
-    description.Size = UDim2.new(1, -90, 0, 18)
-    description.Position = UDim2.new(0, 14, 0, 29)
-
-    description.BackgroundTransparency = 1
-    description.TextColor3 = MUTED
-    description.Font = Enum.Font.SourceSans
-    description.TextSize = 10
-    description.TextXAlignment = Enum.TextXAlignment.Left
-    description.Parent = optionFrame
-
-    if globalVarName == "WeaponESP" then
-        description.Text = "Show weapon pickups"
-    elseif globalVarName == "LootESP" then
-        description.Text = "Show supplies and loot"
-    elseif globalVarName == "GPSTracking" then
-        description.Text = "Show distance tracking"
-    end
-
-    -- Toggle button
-    local toggle = Instance.new("TextButton")
-    toggle.Size = UDim2.new(0, 55, 0, 28)
-    toggle.Position = UDim2.new(1, -68, 0.5, -14)
-
-    toggle.BorderSizePixel = 0
-    toggle.Font = Enum.Font.SourceSansBold
-    toggle.TextSize = 10
-    toggle.AutoButtonColor = false
-    toggle.Parent = optionFrame
-
-    local toggleCorner = Instance.new("UICorner")
-    toggleCorner.CornerRadius = UDim.new(1, 0)
-    toggleCorner.Parent = toggle
-
-    local function updateVisuals()
-
-        if _G[globalVarName] then
-
-            toggle.Text = "ON"
-            toggle.BackgroundColor3 = CRIMSON
-            toggle.TextColor3 = WHITE
-
-            optionStroke.Color = DARK_CRIMSON
-
-        else
-
-            toggle.Text = "OFF"
-            toggle.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
-            toggle.TextColor3 = MUTED
-
-            optionStroke.Color = Color3.fromRGB(45, 45, 50)
-
-        end
-
-    end
-
-    toggle.MouseButton1Click:Connect(function()
-
-        _G[globalVarName] = not _G[globalVarName]
-
-        updateVisuals()
-
-    end)
-
-    updateVisuals()
+local function updateToggleVisuals(enabled)
+if enabled then
+toggle.Text = "ON"
+toggle.TextColor3 = WHITE
+TweenService:Create(toggle, TweenInfo.new(0.2), {BackgroundColor3 = CRIMSON}):Play()
+else
+toggle.Text = "OFF"
+toggle.TextColor3 = MUTED
+TweenService:Create(toggle, TweenInfo.new(0.2), {BackgroundColor3 = DARK}):Play()
+end
 end
 
--- ============================================================
--- FEATURES
--- ============================================================
-
-createToggleOption("WEAPONS ESP", "WeaponESP", 1)
-createToggleOption("SUPPLIES ESP", "LootESP", 2)
-createToggleOption("GPS TRACKING", "GPSTracking", 3)
-
--- ============================================================
--- FOOTER
--- ============================================================
-
-local footer = Instance.new("TextLabel")
-footer.Size = UDim2.new(1, -30, 0, 20)
-footer.Position = UDim2.new(0, 15, 1, -27)
-
-footer.BackgroundTransparency = 1
-footer.Text = "INFECTED LANDS  •  CRIMSON THEME"
-footer.TextColor3 = Color3.fromRGB(105, 105, 115)
-footer.Font = Enum.Font.SourceSans
-footer.TextSize = 9
-footer.TextXAlignment = Enum.TextXAlignment.Center
-footer.Parent = menuFrame
-
--- ============================================================
--- MAIN BUTTON EVENT
--- ============================================================
-
-mainToggleBtn.MouseButton1Click:Connect(function()
-    menuFrame.Visible = not menuFrame.Visible
+toggle.MouseButton1Click:Connect(function()
+shared.CrimsonConfig[globalVarName] = not shared.CrimsonConfig[globalVarName]
+updateToggleVisuals(shared.CrimsonConfig[globalVarName])
 end)
+
+updateToggleVisuals(shared.CrimsonConfig[globalVarName])
+
+end 
+
+createToggleOption("Weapon ESP", "WeaponESP", 1)
+createToggleOption("Loot ESP", "LootESP", 2)
+createToggleOption("GPS Tracking", "GPSTracking", 3)
